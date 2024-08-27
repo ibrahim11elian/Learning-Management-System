@@ -57,8 +57,8 @@ Route::middleware('auth')->controller(LessonController::class)->group(function (
     Route::get('/courses/{course}/lessons', 'index')->can('view',Course::class)->name('lessons.index');
     Route::get('/courses/lessons/{lesson}', 'show')->can('view',Lesson::class)->name('lessons.show');
 
-    Route::get('/courses/{course}/lessons/create', 'create')->can('create',Lesson::class)->name('lessons.create');
-    Route::post('/courses/{course}/lessons', 'store')->can('create',Lesson::class)->name('lessons.store');
+    Route::get('/courses/{course}/lessons/create', 'create')->can('create',Course::class)->name('lessons.create');
+    Route::post('/courses/{course}/lessons', 'store')->can('create',Course::class)->name('lessons.store');
 
     Route::get('/courses/lessons/{lesson}/edit', 'edit')->can('update',Lesson::class)->name('lessons.edit');
     Route::patch('/courses/lessons/{lesson}', 'update')->can('update',Lesson::class)->name('lessons.update');

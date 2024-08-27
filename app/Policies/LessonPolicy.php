@@ -15,6 +15,17 @@ class LessonPolicy
      */
     public function viewAny(User $user,Course $course): bool
     {
+        // Check if the user is an admin
+        if ($user->role == 'admin') {
+            return true;
+        }
+
+        // Check if the user is an instructor
+        if ($user->role == 'instructor') {
+            return $user->id == $course->instructor_id;
+        }
+
+        // if the user is a student
         // Find the user's enrollment in the course
         $enrollment = Enrollment::where('student_id', $user->id)
                                 ->where('course_id', $course->id)

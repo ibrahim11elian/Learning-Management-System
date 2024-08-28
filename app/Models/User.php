@@ -46,10 +46,6 @@ class User extends Authenticatable
         ];
     }
 
-    // if user was instructor
-    public function courses(){
-        return $this->hasMany(Course::class);
-    }
 
     // if user was student
     public function enrollments(){

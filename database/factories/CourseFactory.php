@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
-use App\Models\User;
+use App\Models\Instructor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +21,7 @@ class CourseFactory extends Factory
         return [
             'title'=>$this->faker->title(),
             'description'=>$this->faker->sentence(),
-            'instructor_id'=>User::factory(),
+            'instructor_id'=>Instructor::factory(),
             'category_id'=>Category::factory()
         ];
     }

@@ -12,7 +12,7 @@ class Course extends Model
     protected $guarded = [];
 
     public function instructor(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Instructor::class,'instructor_id','id');
     }
 
     public function lessons(){

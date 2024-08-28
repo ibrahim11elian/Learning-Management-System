@@ -15,7 +15,7 @@ class CourseController extends Controller
     public function index()
     {
         return Inertia::render('Courses/Index',[
-            'courses' => Course::with(['instructor','category'])->get()
+            'courses' => Course::with(['instructor','category','enrollments'])->paginate(10)
         ]);
     }
 

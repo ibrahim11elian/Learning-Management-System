@@ -19,7 +19,9 @@ class ProfileController extends Controller
         $user = Auth::user()->load('roles');
 
         if ($user->hasRole('instructor')) {
-            redirect(route('instructor.courses'));
+           return redirect(route('instructor.courses',[
+                'user' => $user->id
+            ]));
         } else if ($user->hasRole('student')) {
             Log::info('User has role: student');
             return redirect(route('student.dashboard',[

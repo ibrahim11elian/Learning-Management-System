@@ -1,20 +1,14 @@
 import { FaUser } from "react-icons/fa";
 import { HiStar } from "react-icons/hi2";
 
-const CourseCard = ({ course }) => {
-    const {
-        id,
-        image,
-        category,
-        price,
-        title,
-        rating,
-        enrollments,
-        categoryColor,
-    } = course;
+const CourseCard = ({ course, className }) => {
+    const { id, image, category, price, title, rating, enrollments_count } =
+        course;
 
     return (
-        <article className="col-span-full sm:col-span-6 md:col-span-4 lg:col-span-3 flex flex-col justify-center items-center pb-3.5 w-full bg-white border border-gray-200 border-solid">
+        <article
+            className={`flex flex-col justify-center items-center pb-3.5 w-full bg-white border border-gray-200 border-solid ${className}`}
+        >
             <img
                 loading="lazy"
                 src={`https://picsum.photos/seed/${id}/400`}
@@ -44,7 +38,7 @@ const CourseCard = ({ course }) => {
                     <FaUser className="text-indigo-400 text-lg" />
                     <div className="flex justify-center items-center gap-2">
                         <span className="font-medium text-gray-600">
-                            {enrollments.length.toLocaleString()}
+                            {enrollments_count.toLocaleString()}
                         </span>
                         <span className="text-gray-400"> students</span>
                     </div>

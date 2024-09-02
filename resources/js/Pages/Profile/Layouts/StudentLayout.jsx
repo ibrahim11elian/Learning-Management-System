@@ -54,7 +54,9 @@ function StudentLayout({ children }) {
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
-                                href={link.href}
+                                href={route(`student.${link.href}`, {
+                                    user: user.id,
+                                })}
                                 className={`py-3 capitalize px-4 border-b-2 transition-colors duration-300 h-full
                                         ${
                                             route().current(

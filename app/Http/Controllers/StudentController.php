@@ -9,6 +9,13 @@ use Inertia\Inertia;
 
 class StudentController extends Controller
 {
+    private $paginationCount;
+
+    public function __construct()
+    {
+        $this->paginationCount = env('PAGINATION_COUNT', 10);
+    }
+
     public function dashboard(){
         return Inertia::render('Profile/Student/Dashboard', [
             'stats' => $this->getUserDashboardStats()
@@ -26,7 +33,14 @@ class StudentController extends Controller
          $user = Auth::user();
 
         // Retrieve the courses directly via enrollments
-        $enrollments = $user->enrollments()->with(['course.category','course.instructor','course.enrollments'])->paginate(10);
+        $enrollments = $user->enrollments()
+            ->with([
+                'course' => function($query) {
+                    $query->with(['category', 'instructor'])
+                        ->withCount('enrollments');
+                }
+            ])
+            ->paginate($this->paginationCount);
         return Inertia::render('Profile/Student/Courses',[
             'enrollments' => $enrollments
         ]);
@@ -40,7 +54,7 @@ class StudentController extends Controller
         $user = Auth::user();
 
         $stats = [
-             'enrolled_courses' => $user->enrollments()->count(),
+            'enrolled_courses' => $user->enrollments()->count(),
             'active_courses' => $user->enrollments()->whereNull('completed_at')->count(),
             'completed_courses' => $user->enrollments()->whereNotNull('completed_at')->count(),
         ];

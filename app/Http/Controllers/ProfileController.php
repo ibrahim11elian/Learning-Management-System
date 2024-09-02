@@ -3,25 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
 use Inertia\Response;
 
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Display the user's profile.
      */
-    public function edit(Request $request): Response
-    {
-        return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
-        ]);
+    public function index(){
+        $user = Auth::user()->load('roles');
+
+        if ($user->hasRole('instructor')) {
+            redirect(route('instructor.courses'));
+        } else if ($user->hasRole('student')) {
+            Log::info('User has role: student');
+            return redirect(route('student.dashboard',[
+                'user' => $user->id
+            ]));
+        }
+
+        return abort(404);
     }
 
     /**
@@ -36,8 +42,9 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+        $id = Auth::id();
 
-        return Redirect::route('profile.edit');
+        return redirect("/user/" . $id . "/settings");
     }
 
     /**
@@ -59,5 +66,16 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function getUserProfile()
+    {
+        $user = Auth::user();
+        $roles = $user->roles->pluck('name');
+
+        return response()->json([
+            'user' => $user,
+            'roles' => $roles,
+        ]);
     }
 }

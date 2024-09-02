@@ -19,9 +19,7 @@ class EnrollmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'student_id'=>User::factory()->create([
-                'role'=>'student',
-            ]),
+            'student_id'=>User::factory(),
             'course_id'=>Course::factory(),
             'progress'=>$this->faker->randomFloat(2,0,9.0),
         ];

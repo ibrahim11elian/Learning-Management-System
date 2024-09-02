@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\Certificate;
 use App\Models\Enrollment;
 use App\Models\Lesson;
+use App\Models\Role;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,8 +25,18 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Answer::factory(20)->create();
-        Lesson::factory(50)->create();
+        $roles = [
+            'admin',
+            'instructor',
+            'student',
+        ];
+
+        foreach ($roles as $role) {
+            Role::create(['name' => $role]);
+        }
+
+        Answer::factory(10)->create();
+        Lesson::factory(10)->create();
         Certificate::factory(10)->create();
     }
 }

@@ -6,10 +6,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -46,10 +47,43 @@ class User extends Authenticatable
         ];
     }
 
+    // if user was instructor
+    public function instructor(){
+        return $this->hasOne(Instructor::class);
+    }
 
     // if user was student
     public function enrollments(){
-        return $this->hasMany(Enrollment::class);
+        return $this->hasMany(Enrollment::class,'student_id','id');
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class,'user_roles');
+    }
+
+    public function isStudent()
+    {
+        return $this->roles->contains('name', 'student');
+    }
+
+    public function isInstructor()
+    {
+        return $this->roles->contains('name', 'instructor');
+    }
+
+    public function isAdmin()
+    {
+        return $this->roles->contains('name', 'admin');
+    }
+
+    public function assignRole($roleName)
+    {
+        $role = Role::where('name', $roleName)->firstOrFail();
+        $this->roles()->attach($role);
+    }
+
+    public function hasRole($roleName){
+        return $this->roles->contains('name', $roleName);
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
@@ -22,11 +23,18 @@ Route::get('/home', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/user/{user}', [ProfileController::class, 'index'])->name('profile.index');
 
+    Route::middleware('restricted_to:instructor')->group(function(){
+        Route::get('/user/{user}/courses', [InstructorController::class, 'courses'])->name('instructor.courses');
+        Route::get('/user/{user}/enrollments', [InstructorController::class, 'enrollments'])->name('instructor.enrolled.courses');
+    });
 
-    Route::get('/user/{user}/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
-    Route::get('/user/{user}/courses', [StudentController::class, 'courses'])->name('student.courses');
-    Route::get('/user/{user}/wishlist', [StudentController::class, 'wishList'])->name('student.wishlist');
-    Route::get('/user/{user}/settings', [StudentController::class, 'settings'])->name('student.settings');
+    Route::middleware('restricted_to:student')->group(function(){
+        Route::get('/user/{user}/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+        Route::get('/user/{user}/courses', [StudentController::class, 'courses'])->name('student.courses');
+        Route::get('/user/{user}/wishlist', [StudentController::class, 'wishList'])->name('student.wishlist');
+        Route::get('/user/{user}/settings', [StudentController::class, 'settings'])->name('student.settings');
+    });
+
 
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

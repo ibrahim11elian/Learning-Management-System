@@ -3,40 +3,36 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Middleware\RestrictedTo;
+use App\Http\Controllers\StudentController;
 use App\Models\Course;
 use App\Models\Lesson;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
 
 Route::get('/',function(){
     return redirect('/home');
 });
 
 Route::get('/home', function () {
-    return Inertia::render('Home', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('Home');
 })->name('home');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/user/{user}', [ProfileController::class, 'index'])->name('profile.index');
+
+
+    Route::get('/user/{user}/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    Route::get('/user/{user}/courses', [StudentController::class, 'courses'])->name('student.courses');
+    Route::get('/user/{user}/wishlist', [StudentController::class, 'wishList'])->name('student.wishlist');
+    Route::get('/user/{user}/settings', [StudentController::class, 'settings'])->name('student.settings');
+
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 
-// Route::get('/admin',function(){
-//     return Inertia::render('Admin');
-// })->middleware(['auth', 'restricted_to:student']);
 
 Route::controller(CourseController::class)->group(function(){
     Route::get('/courses', 'index')->name('courses.index');

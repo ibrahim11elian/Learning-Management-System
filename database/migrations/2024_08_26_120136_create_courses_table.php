@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Category;
+use App\Models\Instructor;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->foreignId('instructor_id')->references('id')->on('instructors')->cascadeOnDelete();
-            $table->foreignId('category_id')->references('id')->on('categories')->cascadeOnDelete();
+            $table->foreignIdFor(Instructor::class);
+            $table->foreignIdFor(Category::class);
             $table->timestamps();
         });
     }

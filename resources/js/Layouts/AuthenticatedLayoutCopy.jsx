@@ -3,11 +3,13 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
-export default function Authenticated({ user, header, children }) {
+export default function Authenticated({ header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+
+    const user = usePage().props.auth;
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -62,11 +64,13 @@ export default function Authenticated({ user, header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link
-                                            href={route("profile.edit")}
+                                        {/* <Dropdown.Link
+                                            href={route("profile.edit", {
+                                                user,
+                                            })}
                                         >
                                             Profile
-                                        </Dropdown.Link>
+                                        </Dropdown.Link> */}
                                         <Dropdown.Link
                                             href={route("logout")}
                                             method="post"
@@ -148,9 +152,9 @@ export default function Authenticated({ user, header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route("profile.edit")}>
+                            {/* <ResponsiveNavLink href={route("profile.edit")}>
                                 Profile
-                            </ResponsiveNavLink>
+                            </ResponsiveNavLink> */}
                             <ResponsiveNavLink
                                 method="post"
                                 href={route("logout")}

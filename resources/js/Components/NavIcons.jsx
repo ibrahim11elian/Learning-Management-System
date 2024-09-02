@@ -39,7 +39,7 @@ const NavLink = ({ to, children, active }) => {
     return (
         <Link
             href={to}
-            className={` text-2xl ${
+            className={` text-xl ${
                 active
                     ? "text-main-500"
                     : "text-gray-900 hover:text-main-500 transition-colors duration-300"

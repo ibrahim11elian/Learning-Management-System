@@ -1,5 +1,5 @@
-import CourseList from "@/Components/CourseList";
-import Pagination from "@/Components/Pagination";
+import CourseList from "@/Pages/Courses/Partials/CourseList";
+import Pagination from "@/Pages/Courses/Partials/Pagination";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 
 function Index({ auth, courses }) {

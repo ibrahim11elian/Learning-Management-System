@@ -3,9 +3,10 @@ import NavIcons from "./NavIcons";
 import AccountButtons from "./AccountButtons";
 import ApplicationLogo from "./ApplicationLogo";
 import SearchInput from "./SearchInput";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
-function Header({ user }) {
+function Header() {
+    const { user } = usePage().props.auth;
     return (
         <header className=" min-w-[65rem] flex  gap-10 justify-between items-center px-8 py-4 bg-white shadow-sm max-md:px-5 border-b-2 border-gray-100">
             <div className="flex gap-10 justify-center items-center self-stretch my-auto min-w-[240px] max-md:max-w-full">
@@ -16,7 +17,7 @@ function Header({ user }) {
                 <NavIcons />
 
                 {user ? (
-                    <Link href="/account">
+                    <Link href={`/user/${user.id}`}>
                         <img
                             src="https://picsum.photos/seed/picsum/300"
                             alt={user.first_name}

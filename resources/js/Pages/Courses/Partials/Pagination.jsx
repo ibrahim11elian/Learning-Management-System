@@ -2,6 +2,8 @@ import { Link } from "@inertiajs/react";
 import { HiArrowLeft, HiArrowRight } from "react-icons/hi2";
 
 function Pagination({ courses }) {
+    if (courses?.data?.length <= 10) return null;
+
     return (
         <nav className="flex items-center justify-center gap-2">
             {courses?.links?.map((link, index) => (

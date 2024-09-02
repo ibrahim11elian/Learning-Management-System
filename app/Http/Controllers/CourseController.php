@@ -9,13 +9,22 @@ use Inertia\Inertia;
 
 class CourseController extends Controller
 {
+    private $paginationCount;
+
+    public function __construct()
+    {
+        $this->paginationCount = env('PAGINATION_COUNT', 10);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         return Inertia::render('Courses/Index',[
-            'courses' => Course::with(['instructor','category','enrollments'])->paginate(10)
+            'courses' => Course::with(['instructor', 'category'])
+                            ->withCount('enrollments')
+                            ->paginate($this->paginationCount)
         ]);
     }
 

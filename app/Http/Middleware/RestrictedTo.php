@@ -46,6 +46,9 @@ class RestrictedTo
         $user = $request->user();
 
         // Check if the user has any of the required roles
-        return $user && in_array($user->role, $this->roles);
+        foreach ($this->roles as $role) {
+            if (!$user->hasRole($role)) return false;
+        }
+        return true;
     }
 }

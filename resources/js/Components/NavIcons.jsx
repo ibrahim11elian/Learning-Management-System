@@ -1,9 +1,14 @@
-import { Link } from "@inertiajs/react";
+import useLogout from "@/hooks/useLogout";
+import { Link, usePage } from "@inertiajs/react";
 import React from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart, FiBell } from "react-icons/fi";
+import { IoMdLogOut } from "react-icons/io";
 
 function NavIcons() {
+    const { user } = usePage().props.auth;
+    const { logout, isLoading } = useLogout();
+
     return (
         <>
             <NavLink
@@ -29,6 +34,16 @@ function NavIcons() {
             >
                 <FiBell />
             </NavLink>
+
+            {user && (
+                <button
+                    onClick={logout}
+                    disabled={isLoading}
+                    className="flex items-center text-gray-900 hover:text-main-500 transition-colors duration-300 disabled:cursor-not-allowed"
+                >
+                    <IoMdLogOut className="text-xl" />
+                </button>
+            )}
         </>
     );
 }
